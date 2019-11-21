@@ -1,9 +1,9 @@
 import sys
 import traceback
 import logging
+import simplejson
 
 from django.conf import settings
-from django.utils import simplejson
 from django.views.generic.base import View
 from django.http import HttpResponse, Http404
 
