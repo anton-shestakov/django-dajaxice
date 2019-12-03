@@ -2,6 +2,7 @@ import sys
 import traceback
 import logging
 import simplejson
+import six
 
 from django.conf import settings
 from django.views.generic.base import View
@@ -19,7 +20,8 @@ def safe_dict(d):
     http://www.gossamer-threads.com/lists/python/bugs/684379
     """
     if isinstance(d, dict):
-        return dict([(k.encode('utf-8'), safe_dict(v)) for k, v in d.iteritems()])
+        return dict([(k.encode('utf-8'), safe_dict(v))
+                     for k, v in six.iteritems(d)])
     elif isinstance(d, list):
         return [safe_dict(x) for x in d]
     else:
@@ -52,13 +54,13 @@ class DajaxiceRequest(View):
             # Call the function. If something goes wrong, handle the Exception
             try:
                 response = function.call(request, **data)
-            except Exception, e:
+            except Exception as e:
                 # Log the traceback
                 log.error('\n'.join(traceback.format_exception(*sys.exc_info())))
                 if settings.DEBUG:
                     raise
                 response = dajaxice_config.DAJAXICE_EXCEPTION
 
-            return HttpResponse(response, mimetype="application/x-json")
+            return HttpResponse(response, content_type="application/x-json")
         else:
             raise FunctionNotCallableError(name)
