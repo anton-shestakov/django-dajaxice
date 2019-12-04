@@ -2,10 +2,8 @@ import logging
 
 from django import template
 from django.middleware.csrf import get_token
-from django.conf import settings
-from django.core.files.storage import get_storage_class
-
-staticfiles_storage = get_storage_class(settings.STATICFILES_STORAGE)()
+from django.templatetags.static import static
+from django.utils.text import mark_safe
 
 register = template.Library()
 
@@ -31,5 +29,5 @@ def dajaxice_js_import(context, csrf=True):
                     "_processors.request' to your TEMPLATE_CONTEXT_PROCESSORS "
                     "and render your views using a RequestContext.")
 
-    url = staticfiles_storage.url('dajaxice/dajaxice.core.js')
-    return '<script src="%s" type="text/javascript" charset="utf-8"></script>' % url
+    url = static('dajaxice/dajaxice.core.js')
+    return mark_safe('<script src="%s" type="text/javascript" charset="utf-8"></script>' % url)
