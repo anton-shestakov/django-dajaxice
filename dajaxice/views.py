@@ -20,7 +20,7 @@ def safe_dict(d):
     http://www.gossamer-threads.com/lists/python/bugs/684379
     """
     if isinstance(d, dict):
-        return dict([(k.encode('utf-8'), safe_dict(v))
+        return dict([(k, safe_dict(v))
                      for k, v in six.iteritems(d)])
     elif isinstance(d, list):
         return [safe_dict(x) for x in d]
