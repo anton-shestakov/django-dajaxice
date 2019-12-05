@@ -3,7 +3,11 @@ import logging
 from django import template
 from django.middleware.csrf import get_token
 from django.templatetags.static import static
-from django.utils.text import mark_safe
+try:
+    from django.utils.safestring import mark_safe
+except ImportError:
+    from django.utils.text import mark_safe
+
 
 register = template.Library()
 
