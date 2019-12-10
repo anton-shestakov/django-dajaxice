@@ -56,7 +56,7 @@ class DajaxiceRequest(View):
                 response = function.call(request, **data)
             except Exception as e:
                 # Log the traceback
-                log.error('\n'.join(traceback.format_exception(*sys.exc_info())))
+                log.error(e, exc_info=True)
                 if settings.DEBUG:
                     raise
                 response = dajaxice_config.DAJAXICE_EXCEPTION
